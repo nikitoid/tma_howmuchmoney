@@ -8,7 +8,6 @@
         <UButton @click="test">Т</UButton>
       </template>
       <template #name-data="{ row, column }">
-        <!-- <div v-if="column.key === 'id'">{{ row.id }}</div> -->
         <UInput v-model="row[column.key]" :error="errors[row.id]?.[column.key]"
           @blur="validateField(row, column.key)" @input="debouncedSave" />
       </template>
@@ -17,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-const { ref, computed, onMounted } = await import('vue')
+const { ref, onMounted } = await import('vue')
 const { useWebAppPopup } = await import('vue-tg')
 const { showAlert } = useWebAppPopup()
 
@@ -35,7 +34,7 @@ const loading = ref(false)
 const columns = [
   { key: 'id', label: 'ID' },
   { key: 'name', label: 'Имя' },
-  { key: 'rate', label: 'Коэф', default: 1.0 },
+  { key: 'rate', label: 'Коэф', default: 1.0, width: '5px' },
   { key: 'amount', label: 'Сумма', default: 0 }
 ]
 

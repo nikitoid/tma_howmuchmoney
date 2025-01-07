@@ -1,6 +1,10 @@
 <template>
+  <header>
+    <UToggle v-model="exampleSelected" label="example table" />
+  </header>
   <div>
-    <TableComponent />
+    <NewTableComponent v-if="!exampleSelected" />
+    <ExampleTableComponent v-else/>
   </div>
 
   <!-- <MainButton :disabled="!isCalculateEnabled" :text="textMainButton" color="rgba(0, 191, 111, 1)" @click="calculate" /> -->
@@ -10,6 +14,10 @@
 
 <script lang="ts" setup>
 import TableComponent from '~/components/TableComponent.vue'
+import NewTableComponent from '~/components/NewTableComponent.vue'
+import ExampleTableComponent from '~/components/ExampleTableComponent.vue'
+
+const exampleSelected = ref(false)
 
 </script>
 
