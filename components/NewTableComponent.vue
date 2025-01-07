@@ -106,7 +106,7 @@ const { data: todos, status } = await useLazyAsyncData<{
       </div>
 
       <div class="flex gap-1.5 items-center">
-        <UDropdown v-if="selectedRows.length > 1" :items="actions" :ui="{ width: 'w-36' }">
+        <!-- <UDropdown v-if="selectedRows.length > 1" :items="actions" :ui="{ width: 'w-36' }">
           <UButton
             icon="i-heroicons-chevron-down"
             trailing
@@ -115,7 +115,7 @@ const { data: todos, status } = await useLazyAsyncData<{
           >
             Mark as
           </UButton>
-        </UDropdown>
+        </UDropdown> -->
 
         <USelectMenu v-model="selectedColumns" :options="excludeSelectColumn" multiple>
           <UButton
