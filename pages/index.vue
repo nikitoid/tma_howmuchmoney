@@ -1,6 +1,6 @@
 <template>
   <header>
-    <UToggle v-model="exampleSelected" label="example table" />
+    <UToggle v-model="exampleSelected" v-if="false" label="example table" />
   </header>
   <div>
     <NewTableComponent v-if="!exampleSelected" />
@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import TableComponent from '~/components/TableComponent.vue'
+// import TableComponent from '~/components/TableComponent.vue'
 import NewTableComponent from '~/components/NewTableComponent.vue'
 import ExampleTableComponent from '~/components/ExampleTableComponent.vue'
 
