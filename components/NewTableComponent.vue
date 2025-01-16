@@ -118,28 +118,6 @@ const isSelectedRows = computed(() => selectedRows.value.length > 0);
 // Pagination
 const sort = ref({ column: 'id', direction: 'asc' as const });
 
-const testNames: string[] = [
-  "Никита Еремин",
-  "Роман Яковлев",
-  "Александр Юмакин",
-  "Евгений Шигаев",
-  "Александр Захаров",
-  "Виктория Еремина",
-  "Елена Гамзаева",
-  "Анастасия Рязанова",
-  "Дмитриев Николай",
-  "Алеев Николай",
-  "Сорокин Сергей"
-];
-testNames.forEach(e => {
-  rows.value.push({
-    id: rows.value.length + 1,
-    name: e,
-    rate: 1,
-    amount: 10000
-  });
-});
-
 // Инициализация локальных значений для тестирования
 rows.value.forEach(row => {
   localRows.value[row.id] = {
