@@ -65,27 +65,27 @@ const testMode: boolean = true;
 const modal = useModal();
 
 const init = () => {
-  const testNames: string[] = [
-    "Никита Еремин",
-    "Роман Яковлев",
-    "Александр Юмакин",
-    "Евгений Шигаев",
-    "Александр Захаров",
-    "Виктория Еремина",
-    "Елена Гамзаева",
-    "Анастасия Рязанова",
-    "Дмитриев Николай",
-    "Алеев Николай",
-    "Сорокин Сергей"
-  ];
-  testNames.forEach(v => {
-    rows.value.push({
-      id: defaultValue.id.value,
-      name: v,
-      rate: defaultValue.rate,
-      amount: Math.floor(Math.random() * (10000 - 100 + 1)) + 100
-    });
-  });
+  // const testNames: string[] = [
+  //   "Никита Еремин",
+  //   "Роман Яковлев",
+  //   "Александр Юмакин",
+  //   "Евгений Шигаев",
+  //   "Александр Захаров",
+  //   "Виктория Еремина",
+  //   "Елена Гамзаева",
+  //   "Анастасия Рязанова",
+  //   "Дмитриев Николай",
+  //   "Алеев Николай",
+  //   "Сорокин Сергей"
+  // ];
+  // testNames.forEach(v => {
+  //   rows.value.push({
+  //     id: defaultValue.id.value,
+  //     name: v,
+  //     rate: defaultValue.rate,
+  //     amount: Math.floor(Math.random() * (10000 - 100 + 1)) + 100
+  //   });
+  // });
 };
 
 // Columns
