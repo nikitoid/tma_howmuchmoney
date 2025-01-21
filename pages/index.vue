@@ -3,8 +3,8 @@
     <UToggle v-model="exampleSelected" v-if="false" label="example table" />
   </header>
   <div>
-    <NewTableComponent v-if="!exampleSelected" />
-    <ExampleTableComponent v-else/>
+    <TableComponent v-if="!exampleSelected" />
+    <testFromNuxtDocsAI v-else/>
   </div>
 
   <!-- <MainButton :disabled="!isCalculateEnabled" :text="textMainButton" color="rgba(0, 191, 111, 1)" @click="calculate" /> -->
@@ -13,9 +13,10 @@
 </template>
 
 <script lang="ts" setup>
-// import TableComponent from '~/components/TableComponent.vue'
+import TableComponent from '~/components/TableComponent.vue'
 import NewTableComponent from '~/components/NewTableComponent.vue'
-import ExampleTableComponent from '~/components/ExampleTableComponent.vue'
+// import ExampleTableComponent from '~/components/ExampleTableComponent.vue'
+import testFromNuxtDocsAI from '~/components/testFromNuxtDocsAI.vue'
 
 const exampleSelected = ref(false)
 

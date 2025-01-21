@@ -7,21 +7,15 @@
     body: { padding: '', base: 'divide-y divide-gray-200 dark:divide-gray-700' },
     footer: { padding: 'p-4' }
   }">
-    <!-- Title -->
-    <!-- <template #header>
-      <h2 class="font-semibold text-center text-xl text-gray-900 dark:text-white leading-tight">
-        How much money?
-      </h2>
-    </template> -->
-
     <!-- Header and Action buttons -->
     <div class="flex items-center w-full px-4 py-2">
-      <!-- <div class="grid justify-stretch grid-flow-col items-center w-full px-4 py-2"> -->
       <div class="flex justify-start flex-1 text-left gap-1.5">
         <UButton icon="i-material-symbols-add-row-below-rounded" size="sm" color="primary" variant="outline"
           @click="newRow" :ui="{ rounded: 'rounded-full' }" square />
         <UButton :disabled="!isSelectedRows" icon="i-material-symbols-delete-rounded" size="sm" color="red"
           :variant="isSelectedRows ? 'outline' : 'ghost'" @click="delRow" :ui="{ rounded: 'rounded-full' }" square />
+        <UButton v-if="testMode" icon="i-ic-baseline-app-settings-alt" size="sm" color="rose" variant="soft"
+          @click="test" :ui="{ rounded: 'rounded-full' }" square />
       </div>
 
       <div class="flex justify-center flex-1 gap-1.5">
@@ -31,11 +25,6 @@
       <div class="flex justify-end flex-1 gap-1.5">
         <UButton icon="i-ic-round-cloud-download" variant="soft" color="emerald" />
         <UButton icon="i-ic-round-save" variant="soft" color="yellow" />
-        <!-- <USelectMenu v-model="selectedColumns" :options="excludeSelectColumn" multiple>
-          <UButton icon="i-heroicons-view-columns" color="gray" size="xs">
-            Columns
-          </UButton>
-        </USelectMenu> -->
       </div>
     </div>
 
@@ -52,15 +41,15 @@
         <UBadge :label="row[column.key]" variant="soft" size="xs" />
       </template>
       <template #name-data="{ row, column }">
-        <UInput :model-value="row[column.key]" :type="column.type" variant="none"
+        <UInput v-model="localRows[row.id][column.key]" :type="column.type" variant="none"
           @blur="handleBlur(row, column.key, $event)" size="sm" :ui="{ padding: { sm: 'px-0' } }" />
       </template>
       <template #rate-data="{ row, column }">
-        <UInput :model-value="row[column.key]" :type="column.type" variant="outline" min="0"
+        <UInput v-model="localRows[row.id][column.key]" :type="column.type" variant="outline" min="0"
           @blur="handleBlur(row, column.key, $event)" size="2xs" :ui="{ base: 'text-center' }" />
       </template>
       <template #amount-data="{ row, column }">
-        <UInput :model-value="row[column.key]" :type="column.type" variant="outline"
+        <UInput v-model="localRows[row.id][column.key]" :type="column.type" variant="outline"
           @blur="handleBlur(row, column.key, $event)" :ui="{ base: 'text-center' }" />
       </template>
     </UTable>
@@ -68,14 +57,15 @@
 </template>
 
 <script lang="ts" setup>
-const testMode: boolean = false;
+const testMode: boolean = true;
 
 // Columns
 const columns = [{
   key: 'id',
   type: 'text',
   label: '#',
-  class: 'w-8 text-center'
+  class: 'w-8 text-center',
+  sortable: false
 }, {
   key: 'select',
   class: 'w-8'
@@ -98,7 +88,6 @@ const columns = [{
 }];
 const selectedColumns = ref(columns);
 const columnsTable = computed(() => columns.filter(column => selectedColumns.value.includes(column)));
-const excludeSelectColumn = computed(() => columns.filter(v => v.key !== 'select'));
 
 // Data
 interface IRow {
@@ -118,6 +107,61 @@ const isSelectedRows = computed(() => selectedRows.value.length > 0);
 // Pagination
 const sort = ref({ column: 'id', direction: 'asc' as const });
 
+const updateInput = (row: IRow, key: keyof IRow, event: Event) => {
+  (row[key] as any) = (event.target as HTMLInputElement).value;
+};
+
+const handleBlur = (row: IRow, key: keyof IRow, event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const value: any = target.value;
+  let correctValue;
+
+  if (key === 'name') {
+    // (row[key] as string) = value;
+    localRows.value[row.id][key] = String(value);
+  } else if (key === 'rate') {
+    // (row[key] as number) = Number(value);
+    correctValue = value.replace(/,/g, '.');
+    localRows.value[row.id][key] = Number(correctValue);
+  } else if (key === 'amount') {
+    // (row[key] as number) = Number(value);
+    localRows.value[row.id][key] = Number(value);
+  }
+};
+
+// Test
+const test = () => {
+  console.log("rows→");
+  console.log(rows.value);
+  console.log("localRows→");
+  console.log(localRows.value);
+  // console.log(columnsTable);
+  // console.log(selectedColumns.value);
+  // console.log(selectedRows.value);
+  // console.log(sort.value);
+};
+const testNames: string[] = [
+  "Никита Еремин",
+  "Роман Яковлев",
+  "Александр Юмакин",
+  "Евгений Шигаев",
+  "Александр Захаров",
+  "Виктория Еремина",
+  "Елена Гамзаева",
+  "Анастасия Рязанова",
+  "Дмитриев Николай",
+  "Алеев Николай",
+  "Сорокин Сергей"
+];
+testNames.forEach(e => {
+  rows.value.push({
+    id: rows.value.length + 1,
+    name: e,
+    rate: 1,
+    amount: 10000
+  });
+});
+
 // Инициализация локальных значений для тестирования
 rows.value.forEach(row => {
   localRows.value[row.id] = {
@@ -127,32 +171,6 @@ rows.value.forEach(row => {
     amount: row.amount
   };
 });
-
-const handleBlur = (row: IRow, key: keyof IRow, event: Event) => {
-  const target = event.target as HTMLInputElement;
-  const value: any = target.value;
-
-  if (key === 'name') {
-    // (row[key] as string) = value;
-    localRows.value[row.id][key] = String(value);
-  } else if (key === 'rate') {
-    // (row[key] as number) = Number(value);
-    localRows.value[row.id][key] = Number(value);
-  } else if (key === 'amount') {
-    // (row[key] as number) = Number(value);
-    localRows.value[row.id][key] = Number(value);
-  }
-};
-
-// Test
-const test = () => {
-  console.log(rows.value);
-  console.log(localRows.value);
-  // console.log(columnsTable);
-  // console.log(selectedColumns.value);
-  // console.log(selectedRows.value);
-  console.log(sort.value);
-};
 
 const updateLocalValues = () => {
   // Очищаем объект
